@@ -1,6 +1,9 @@
 '''First version of a finder chart creator that uses Aladin to locate stars. Reads
 in a csv file with given name, RA, and DEC of the user's target list. Returns .jpgimages of the finder chart for each given object in the csv file.
 
+Download for Aladin Desktop can be found here: 
+http://aladin.u-strasbg.fr/java/nph-aladin.pl?frame=downloading 
+
 FORMAT OF CSV:
 - First line is assumed to be a header and is omitted during read-in. Later 
   versions will include a dialogue so the user may specify whether or not she 
