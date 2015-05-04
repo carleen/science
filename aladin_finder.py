@@ -69,7 +69,7 @@ j = 0
 # Again, the p.stdin.write sends values to the standard inputs of Aladin
 for obj in (coordinates):
     name = names[j]
-    p.stdin.write('reset; get hips(P/2MASS/color) '+obj+'; \n')
+    p.stdin.write('reset; get hips(P/2MASS/K) '+obj+'; \n')
     # Zoom can be changed by the user.
     p.stdin.write('zoom 10arcmin; save '+name+'.jpg\n')
     j = j + 1
