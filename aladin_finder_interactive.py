@@ -52,17 +52,36 @@ def get_file_name():
             print("Error: improper file type or missing file.")
     return file_name
 
+class FormatInError(Exception):
+    #raised when an improper value is passed for the color band
+    pass
+
+
 def get_color_band():
+    color_band = "" 
     while True:
         try:
             color_band = raw_input('Enter either "H", "K",  ' +
             'or "color" for the desired band: ')
-            break
+            if color_band == "H" or color_band == "K" or color_band =="color":
+                break
+            else:
+                raise FormatInError 
+        except FormatInError:
+            print('Improper format!')
     return color_band
 
 def get_zoom_type():
-    zoom_type = raw_input('State whether "degree", "arcmin", or ' +
-        '"arcsec" is desired for the frame: ')
+    while True:
+        try:
+            zoom_type = raw_input('State whether "degree", "arcmin", or ' +
+            '"arcsec" is desired for the frame: ')
+            if zoom_type == "degree" or zoom_type == "arcmin" or zoom_type == "arcsec":
+                break
+            else:
+                raise FormatInError 
+        except FormatInError:
+            print('Improper format!')
     return zoom_type
 
 def get_zoom_value():
@@ -127,4 +146,6 @@ def send_coordinates():
     p.wait()
 
 if __name__ == "__main__":
+    t = get_color_band()
+    x = get_zoom_type()
 
