@@ -101,8 +101,6 @@ def get_variables():
 def read_csv_file():
     csv_file_name = open(file_name)
     csv_file = csv.reader(csv_file_name)
-    for row in csv_file:
-        print(row)
     csv_cat(csv_file)
 
 def csv_cat(csv_file):
@@ -132,23 +130,23 @@ def spawn_process():
         stdin=subprocess.PIPE)
     # Send data to standard input of program
     p.stdin.write('grid on\n')
+    send_coordinates()
 
 
 def send_coordinates():
     # Again, the p.stdin.write sends values to the standard inputs of Aladin
     j = 0
+    print(coordinates)
     for obj in (coordinates):
         name = names[j]
         p.stdin.write('reset; get hips(P/2MASS/'+color_band+') '+obj+'; \n')
         # Zoom can be changed by the user.
         p.stdin.write('zoom '+zoom+'; save '+name+'.jpg\n')
         j = j + 1
-    p.stdin.write('quit\n')
-    p.wait()
 
 if __name__ == "__main__":
     get_variables()
     read_csv_file()
     spawn_process()
-    send_coordinates()
-
+    p.stdin.write('quit\n')
+    p.wait()
