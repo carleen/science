@@ -1,6 +1,9 @@
-'''First version of a finder chart creator that uses Aladin to locate stars. Reads
+'''Second version of a finder chart creator that uses Aladin to locate stars. Reads
 in a csv file with given name, RA, and DEC of the user's target list. Returns .jpg
 images of the finder chart for each given object in the csv file.
+
+This version prompts the user to enter her desired values from the command line. 
+It asks the user for the file name, the color band, and the amount of zoom desired.
 
 Download for Aladin Desktop can be found here: 
 http://aladin.u-strasbg.fr/java/nph-aladin.pl?frame=downloading 
@@ -22,6 +25,8 @@ Other notes:
 - Works with Aladin v8.0. Has not been tested with other versions.
 - Takes approximately 7 seconds per target on my Mac, which has an i5 processor
   and 8 GB of RAM.
+- Currently only works on Mac. Working on making it run on Linux machines as 
+  well.
 
 ................................................................................
 '''
