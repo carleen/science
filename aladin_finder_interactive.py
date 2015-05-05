@@ -78,12 +78,12 @@ def get_zoom_type():
 def get_zoom_value():
     while True:
         try:
-            zoom_value = raw_input('State a value for how many degrees, ' +
+            zoom_value = raw_input('State an integer value for how many degrees, ' +
             'arcminutes, or arcseconds are desired for the zoom: ')
             float(zoom_value)
             break
         except ValueError:
-            print('Not a number!')
+            print('Not an integer!')
     return float(zoom_value)
         
 
