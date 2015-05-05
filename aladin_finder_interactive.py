@@ -28,19 +28,10 @@ Other notes:
 import csv
 import subprocess
 
-# Specifies the csv file to be read, and sets this file to variable
-file = open('Boyer_targets_ordered.csv')
-csv_file = csv.reader(file)
-
-# Initalizes dynamic arrays for both names and RA Dec coordinates
-names = []
-coordinates = []
-
 # Specifies the path to Aladin app, and most importantly the .jar file. This
 # should work for any Mac, as long as you have Aladin installed in your 
 # Applications folder. 
 path = 'java -jar /Applications/Aladin.app/Contents/Java/Aladin.jar'
-
 
 def get_file_name():
     while True:
@@ -85,9 +76,16 @@ def get_zoom_type():
     return zoom_type
 
 def get_zoom_value():
-    zoom_value = raw_input('State a value for how many degrees, ' +
-        'arcminutes, or arcseconds are desired for the zoom: ')
-    return zoom_value
+    while True:
+        try:
+            zoom_value = raw_input('State a value for how many degrees, ' +
+            'arcminutes, or arcseconds are desired for the zoom: ')
+            float(zoom_value)
+            break
+        except ValueError:
+            print('Not a number!')
+    return float(zoom_value)
+        
 
 def get_variables():
     global file_name
@@ -97,18 +95,21 @@ def get_variables():
     color_band = get_color_band()
     zoom_type = get_zoom_type()
     zoom_value = get_zoom_value()
-    zoom = zoom_value + zoom_type
+    zoom = str(zoom_value) + zoom_type
 
 
-def read_csv_file(file):
-    global names
-    global coordinates
-    names = []
-    coordinates = []
-    csv_file = csv.reader(file_name)
+def read_csv_file():
+    csv_file_name = open(file_name)
+    csv_file = csv.reader(csv_file_name)
+    for row in csv_file:
+        print(row)
     csv_cat(csv_file)
 
 def csv_cat(csv_file):
+    global coordinates
+    global names
+    coordinates = []
+    names = []
     i = 0
     for row in csv_file:
         # "if" statement is my way to skip the first line. Would like to change this.
@@ -138,14 +139,16 @@ def send_coordinates():
     j = 0
     for obj in (coordinates):
         name = names[j]
-        p.stdin.write('reset; get hips(P/2MASS/color) '+obj+'; \n')
+        p.stdin.write('reset; get hips(P/2MASS/'+color_band+') '+obj+'; \n')
         # Zoom can be changed by the user.
-        p.stdin.write('zoom 2arcmin; save '+name+'.jpg\n')
+        p.stdin.write('zoom '+zoom+'; save '+name+'.jpg\n')
         j = j + 1
     p.stdin.write('quit\n')
     p.wait()
 
 if __name__ == "__main__":
-    t = get_color_band()
-    x = get_zoom_type()
+    get_variables()
+    read_csv_file()
+    spawn_process()
+    send_coordinates()
 
