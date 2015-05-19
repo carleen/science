@@ -32,6 +32,7 @@ Other notes:
 '''
 import csv
 import subprocess
+import time
 
 # Specifies the path to Aladin app, and most importantly the .jar file. This
 # should work for any Mac, as long as you have Aladin installed in your 
@@ -104,7 +105,7 @@ def get_variables():
 
 
 def read_csv_file():
-    csv_file_name = open(file_name)
+    csv_file_name = open(file_name) 
     csv_file = csv.reader(csv_file_name)
     csv_cat(csv_file)
 
@@ -150,8 +151,10 @@ def send_coordinates():
         j = j + 1
 
 if __name__ == "__main__":
+    start_time = time.time()
     get_variables()
     read_csv_file()
     spawn_process()
     p.stdin.write('quit\n')
     p.wait()
+    print("--- %s seconds ---" % (time.time() - start_time))
