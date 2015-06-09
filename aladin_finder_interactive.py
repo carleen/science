@@ -90,18 +90,20 @@ def get_zoom_value():
             break
         except ValueError:
             print('Not an integer!')
-    return float(zoom_value)
+    return int(zoom_value)
         
 
 def get_variables():
     global file_name
     global color_band
     global zoom
+    global zoom_type
+    global zoom_value
     file_name = get_file_name()
     color_band = get_color_band()
     zoom_type = get_zoom_type()
     zoom_value = get_zoom_value()
-    zoom = str(zoom_value) + zoom_type
+    return str(zoom_type), str(zoom_value)
 
 
 def read_csv_file():
@@ -129,32 +131,34 @@ def csv_cat(csv_file):
         i = 1
 
 # Spawns new process. "stdin" specifies standard input of executed program 
-def spawn_process():
+def spawn_process(units, zoom):
     global p 
     p = subprocess.Popen([path],
         shell=True,
         stdin=subprocess.PIPE)
     # Send data to standard input of program
     p.stdin.write('grid on\n')
-    send_coordinates()
+    send_coordinates(units, zoom)
 
 
-def send_coordinates():
+def send_coordinates(units, zoom):
     # Again, the p.stdin.write sends values to the standard inputs of Aladin
     j = 0
+    space = "_"
     print(coordinates)
     for obj in (coordinates):
         name = names[j]
         p.stdin.write('reset; get hips(P/2MASS/'+color_band+') '+obj+'; \n')
+        title = name + "_" +  zoom + units
         # Zoom can be changed by the user.
-        p.stdin.write('zoom '+zoom+'; save '+name+'.jpg\n')
+        p.stdin.write('zoom '+zoom+'; save '+title+'.jpg\n')
         j = j + 1
 
 if __name__ == "__main__":
     start_time = time.time()
-    get_variables()
+    units, num = get_variables()
     read_csv_file()
-    spawn_process()
+    spawn_process(units, num)
     p.stdin.write('quit\n')
     p.wait()
     print("--- %s seconds ---" % (time.time() - start_time))
